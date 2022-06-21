@@ -1,18 +1,19 @@
 ---
-- hosts: webservers
-  become: True
-  tasks:
-    - name: Install packages
-      apt:
-        name: "httpd"
-        state: "present"
-    - name: Start Apache server
-      service:
-        name: httpd
-        state: started
-        enabled: True
-    - name: Deploy static website
-      copy:
-        src: index.html
-        dest: /var/www/html/
-...
+-name: tomcat
+ hosts: all
+ become: yes
+ tasks:
+-name: install java
+ apt:
+ name: java
+ state: latest
+-name: tomcat install
+ get_url:
+ url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.21/bin/apache-tomcat-10.0.21.tar.gz
+ dest: /user/local
+-name: unzip tom
+ unarchive:
+ src: /user/local/apache-tomcat-10.0.21.tar.gz
+ dest: /user/local
+-name: run tom
+ shell: unhop /user/local/apache-tomcat-10.0.21.tar.gz/bin/startup.sh
